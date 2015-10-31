@@ -1,6 +1,10 @@
-# Commonly ignored files
-*.log
 .DS_Store
 
-# Folders
-node_modules
+/*
+!/.*rc
+!/.*ignore
+!/*.mjs
+!/*.md
+!/makefile
+!/package.json
+!/test

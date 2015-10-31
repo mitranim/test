@@ -1,22 +1,11 @@
 {
-  "name": "test",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Superior testing framework.",
-  "scripts": {
-    "test": "node test",
-    "autotest": "nodemon --watch . --ignore node_modules --exec \"node test\""
-  },
-  "authors": [
-    "Mitranim <me@mitranim.com>"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Mitranim/test.git"
-  },
-  "dependencies": {
-    "co": "^4.6.0",
-    "nodemon": "1.7.3"
-  }
+  "name": "@mitranim/test",
+  "version": "0.1.0",
+  "description": "Tiny utils for JS tests and benchmars. Similar to Deno's std/testing, but runs in all environments.",
+  "type": "module",
+  "main": "./test.mjs",
+  "scripts": {"prepublishOnly": "make prep"},
+  "keywords": ["test", "testing", "bench", "benchmark", "runner"],
+  "repository": {"type": "git", "url": "https://github.com/mitranim/test.git"},
+  "license": "Unlicense"
 }
