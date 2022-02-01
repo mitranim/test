@@ -1,6 +1,6 @@
 {
   "name": "@mitranim/test",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tiny utils for JS tests and benchmars. Similar to Deno's std/testing, but runs in all environments.",
   "type": "module",
   "main": "./test.mjs",
