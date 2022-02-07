@@ -21,7 +21,7 @@ bench:
 	$(DENO) $(BENCH)
 
 lint_w:
-	watchexec -r -d=0 -e=mjs -n -- make lint
+	watchexec -r -d=0 -e=mjs -n -- $(MAKE) lint
 
 lint:
 	deno lint --rules-exclude=no-empty

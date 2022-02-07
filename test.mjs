@@ -641,14 +641,16 @@ function equalStruct(one, two) {
 
 function equalSet(one, two) {
   if (one.size !== two.size) return false
-  for (const val of one) if (!two.has(val)) return false
+  for (const val of Set.prototype.values.call(one)) {
+    if (!two.has(val)) return false
+  }
   return true
 }
 
 function equalMap(one, two) {
   if (one.size !== two.size) return false
-  for (const [key, val] of one.entries()) {
-    if (!equal(val, two.get(key))) return false
+  for (const [key, val] of Map.prototype.entries.call(one)) {
+    if (!equal(val, Map.prototype.get.call(two, key))) return false
   }
   return true
 }
@@ -800,14 +802,14 @@ function trimStart(str, pref) {
 function parseBool(val) {
   if (val === `` || val === `true`) return true
   if (val === `false`) return false
-  throw TypeError(`can't parse ${show(val)} as bool`)
+  throw TypeError(`unable to parse ${show(val)} as bool`)
 }
 
 function toReg(val) {
   if (isNil(val)) return /(?:)/
   if (isStr(val)) return val ? new RegExp(val) : /(?:)/
   if (isReg(val)) return val
-  throw new TypeError(`can't convert ${show(val)} to RegExp`)
+  throw new TypeError(`unable to convert ${show(val)} to RegExp`)
 }
 
 /*
@@ -905,9 +907,10 @@ export function isNaN(val) {return val !== val} // eslint-disable-line no-self-c
 export function isInf(val) {return val === Infinity || val === -Infinity}
 export function isStr(val) {return typeof val === `string`}
 export function isSym(val) {return typeof val === `symbol`}
-export function isKey(val) {return isStr(val) || isSym(val) || isBool(val) || isFin(val)}
-export function isPrim(val) {return !isComp(val)}
+export function isKey(val) {return isPrim(val) && !isJunk(val)}
+export function isJunk(val) {return isNil(val) || isNaN(val) || isInf(val)}
 export function isComp(val) {return isObj(val) || isFun(val)}
+export function isPrim(val) {return !isComp(val)}
 export function isFun(val) {return typeof val === `function`}
 export function isObj(val) {return val !== null && typeof val === `object`}
 export function isStruct(val) {return isObj(val) && !isIter(val) && !isIterAsync(val)}
@@ -925,6 +928,8 @@ export function isCls(val) {return isFun(val) && typeof val.prototype === `objec
 export function isDict(val) {return isObj(val) && isDictProto(Object.getPrototypeOf(val))}
 export function isDictProto(val) {return val === null || val === Object.prototype}
 export function isList(val) {return isArr(val) || (isIter(val) && isNat(val.length))}
+export function isMap(val) {return isInst(val, Map)}
+export function isSet(val) {return isInst(val, Set)}
 export function isClass(sub, sup) {return isCls(sub) && (sub === sup || isSubCls(sub, sup))}
 export function isSubCls(sub, sup) {return isCls(sub) && isInst(sub.prototype, sup)}
 export function isRunner(val) {return isComp(val) && hasMeth(val, `run`)}
@@ -938,30 +943,6 @@ export function isInst(val, cls) {
 
 export function isReporter(val) {
   return isComp(val) && hasMeth(val, `reportStart`) && hasMeth(val, `reportEnd`)
-}
-
-export function isMap(val) {
-  return (
-    isIter(val) &&
-    hasSize(val) &&
-    hasMeth(val, `has`) &&
-    hasMeth(val, `get`) &&
-    hasMeth(val, `set`) &&
-    hasMeth(val, `delete`) &&
-    hasMeth(val, `clear`) &&
-    hasMeth(val, `entries`)
-  )
-}
-
-export function isSet(val) {
-  return (
-    isIter(val) &&
-    hasSize(val) &&
-    hasMeth(val, `has`) &&
-    hasMeth(val, `add`) &&
-    hasMeth(val, `delete`) &&
-    hasMeth(val, `clear`)
-  )
 }
 
 export function show(val) {
