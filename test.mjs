@@ -329,19 +329,19 @@ export class ConsoleBenchReporter extends ConsoleAvgReporter {
 }
 
 export function tsMilli(val) {
-  return `${(req(val, isFin)).toFixed(6).toString()} ms`
+  return `${(req(val, isFin)).toFixed(6)} ms`
 }
 
 export function tsMicro(val) {
-  return `${(req(val, isFin) * 1000).toFixed(3).toString()} μs`
+  return `${(req(val, isFin) * 1000).toFixed(3)} μs`
 }
 
 export function tsNano(val) {
-  return `${(req(val, isFin) * 1_000_000).toFixed(0).toString()} ns`
+  return `${(req(val, isFin) * 1_000_000).toFixed(0)} ns`
 }
 
 export function tsPico(val) {
-  return `${(req(val, isFin) * 1_000_000_000).toFixed(0).toString()} ps`
+  return `${(req(val, isFin) * 1_000_000_000).toFixed(0)} ps`
 }
 
 // Global config and global state.
